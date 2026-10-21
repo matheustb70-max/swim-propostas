@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SWIM × Aurora — Proposta criativa</title>
+  <meta name="description" content="Uma proposta de projeto criada pela SWIM Estúdio Criativo.">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#fdfcfe">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+  <script src="config.js" defer></script>
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#proposta">Ir para a proposta</a>
+  <header class="header">
+    <div class="header-inner wrap">
+      <a href="#inicio" class="logo" aria-label="SWIM Estúdio Criativo — início"><img src="assets/logo.webp" alt="SWIM Estúdio Criativo" width="186" height="63"></a>
+      <nav aria-label="Navegação da proposta"><a href="#proposta">A proposta</a><a href="#processo">Processo</a><a href="#portfolio">Portfólio</a></nav>
+      <a class="pill dark header-cta" href="#investimento">Ver investimento <span aria-hidden="true">↗</span></a>
+    </div>
+    <div class="reading-progress" aria-hidden="true"><span></span></div>
+  </header>
+  <main id="inicio">
+    <section class="hero">
+      <div class="wave-field" aria-hidden="true"></div>
+      <div class="wrap hero-inner">
+        <div class="hero-top"><span class="client-badge"><span class="dot"></span> SWIM <span class="times">×</span> <span data-text="client.shortName"></span></span><span class="proposal-number" data-text="proposal.number"></span></div>
+        <div class="hero-copy">
+          <div><span class="dash" aria-hidden="true"></span><h1><span data-text="hero.title"></span> <em data-text="hero.highlight"></em></h1></div>
+          <div class="hero-side"><p data-text="hero.description"></p><a href="#proposta" class="pill dark">Conheça a proposta <span aria-hidden="true">↓</span></a></div>
+        </div>
+        <div class="hero-meta"><div><span class="meta-label">Preparada para</span><strong data-text="client.name"></strong></div><div><span class="meta-label">Projeto</span><strong data-text="proposal.type"></strong></div><div><span class="meta-label">Validade</span><strong data-text="proposal.validUntil"></strong></div></div>
+        <div class="hero-bottom"><span class="demo-note" id="demo-label">Proposta demonstrativa · cliente e valores fictícios</span><a href="#proposta" class="scroll-cue">Explore a proposta <span aria-hidden="true">↓</span></a></div>
+      </div>
+    </section>
+
+    <section class="context dark-section" id="proposta" aria-labelledby="context-title">
+      <div class="wrap">
+        <div class="section-top"><span class="eyebrow">01 / O seu próximo passo</span><span class="section-sign" aria-hidden="true">↗</span></div>
+        <div class="split-heading"><h2 id="context-title"><span data-text="context.title"></span> <em data-text="context.highlight"></em></h2><div class="context-description"><p data-text="context.description"></p><p class="context-goal" data-text="context.goal"></p></div></div>
+        <div class="outcomes" id="outcomes"></div>
+        <div class="context-bottom"><span data-text="context.footer"></span><a href="#escopo">Veja o que vamos entregar <span aria-hidden="true">↓</span></a></div>
+      </div>
+    </section>
+
+    <section class="studio section-space" aria-labelledby="studio-title">
+      <div class="wrap studio-grid">
+        <div class="studio-mark"><div class="mark-glow" aria-hidden="true"></div><img src="assets/logo.webp" alt="SWIM Estúdio Criativo" width="186" height="63"><p>Design para marcas<br>que <em>importam.</em></p><span class="studio-mark-caption" data-text="studio.signature"></span></div>
+        <div class="studio-copy reveal"><p class="eyebrow">02 / Quem está com você</p><h2 id="studio-title"><span data-text="studio.title"></span> <em data-text="studio.highlight"></em></h2><p data-text="studio.description"></p><p data-text="studio.approach"></p><div class="studio-disciplines" id="disciplines"></div></div>
+      </div>
+    </section>
+
+    <section class="process dark-section section-space" id="processo" aria-labelledby="process-title">
+      <div class="wrap process-grid">
+        <div class="process-intro"><p class="eyebrow">03 / Do primeiro papo à entrega</p><h2 id="process-title"><span data-text="process.title"></span> <em data-text="process.highlight"></em></h2><p data-text="process.description"></p><div class="step-indicator" aria-hidden="true"><span id="current-step">01</span><span class="step-total">/ 06</span><span class="step-line"></span></div><div class="duration"><span class="dot"></span><span data-text="process.duration"></span></div></div>
+        <ol class="steps" id="steps"></ol>
+      </div>
+    </section>
+
+    <section class="portfolio section-space" id="portfolio" aria-labelledby="portfolio-title">
+      <div class="wrap"><div class="section-top"><p class="eyebrow">04 / Ideias que ganharam forma</p><span class="section-sign" aria-hidden="true">↗</span></div><div class="split-heading"><h2 id="portfolio-title"><span data-text="portfolio.title"></span> <em data-text="portfolio.highlight"></em></h2><p data-text="portfolio.description"></p></div><div class="project-grid" id="projects"></div><p class="portfolio-footnote" data-text="portfolio.note"></p></div>
+    </section>
+
+    <section class="scope section-space" id="escopo" aria-labelledby="scope-title">
+      <div class="wrap"><p class="eyebrow">05 / A solução, em detalhes</p><div class="split-heading"><h2 id="scope-title"><span data-text="scope.title"></span> <em data-text="scope.highlight"></em></h2><p data-text="scope.description"></p></div>
+        <div class="scope-grid"><div class="scope-included"><div class="card-heading"><span class="dot"></span><h3>O que está incluído</h3><span class="tag">Entrega completa</span></div><ul id="deliverables" class="deliverables"></ul></div><aside class="scope-aside"><div><p class="eyebrow">Sua participação</p><h3 data-text="scope.clientTitle"></h3><p data-text="scope.clientDescription"></p></div><div class="excluded"><p class="eyebrow">Fora deste escopo</p><ul id="exclusions"></ul></div></aside></div>
+        <div class="timeline-note"><span aria-hidden="true">↳</span><p data-text="scope.timelineNote"></p></div>
+      </div>
+    </section>
+
+    <section class="investment section-space" id="investimento" aria-labelledby="investment-title">
+      <div class="investment-glow" aria-hidden="true"></div>
+      <div class="wrap"><div class="investment-heading"><p class="eyebrow">06 / Vamos dar o próximo passo?</p><h2 id="investment-title">Um investimento na<br><em>próxima fase da sua marca.</em></h2><p data-text="investment.description"></p></div>
+        <div class="investment-card"><div class="investment-summary"><div><span class="meta-label">Projeto proposto</span><h3 data-text="proposal.type"></h3><p data-text="investment.summary"></p></div><div class="price-summary"><span class="meta-label">Investimento total</span><strong id="total-price"></strong><span>Projeto completo</span></div></div>
+          <fieldset class="payment-options"><legend>Escolha como prefere começar</legend><div id="payments"></div></fieldset>
+          <div class="selected-payment" aria-live="polite" id="selected-payment"></div>
+          <div class="investment-action"><button class="pill dark" id="contract-cta" type="button" aria-haspopup="dialog">Revisar e assinar contrato <span aria-hidden="true">↗</span></button><p data-text="investment.actionNote"></p></div>
+          <div class="investment-bottom"><span>Válida até <strong data-text="proposal.validUntil"></strong></span><button id="print-button" class="print-button" type="button">Salvar em PDF <span aria-hidden="true">↓</span></button></div>
+        </div>
+        <p class="investment-demo" id="investment-demo">Condições ilustrativas para apresentação do modelo. Não constituem uma oferta comercial real.</p>
+      </div>
+    </section>
+
+    <section class="faq dark-section section-space" id="duvidas" aria-labelledby="faq-title"><div class="wrap faq-grid"><div><p class="eyebrow">07 / Tudo às claras</p><h2 id="faq-title">Antes de começar,<br><em>vamos tirar as dúvidas.</em></h2><p data-text="faq.description"></p><a class="text-link" id="faq-contact" href="#" target="_blank" rel="noopener noreferrer">Converse com a Swim <span aria-hidden="true">↗</span></a></div><div class="faq-list" id="faq-list"></div></div></section>
+
+    <section class="closing wrap"><div class="closing-glow" aria-hidden="true"></div><p class="eyebrow">SWIM <span aria-hidden="true">×</span> <span data-text="client.shortName"></span></p><h2>Seu próximo projeto<br>pode ser o <em>destaque por aqui.</em></h2><a class="pill dark" id="closing-contact" href="#" target="_blank" rel="noopener noreferrer">Vamos dar forma a essa ideia <span aria-hidden="true">↗</span></a></section>
+  </main>
+  <footer class="site-footer wrap"><div class="footer-main"><div><a href="#inicio" class="footer-logo" aria-label="Voltar ao início"><img src="assets/logo.webp" alt="SWIM Estúdio Criativo" width="186" height="63"></a><p>Design para marcas<br>que <em>importam.</em></p></div><div class="footer-contact"><span class="meta-label">Uma ideia. Muitas possibilidades.</span><a id="footer-site" href="https://estudioswim.com.br/" target="_blank" rel="noopener noreferrer">Conheça o estúdio <span aria-hidden="true">↗</span></a><span class="footer-credit" data-text="proposal.number"></span></div></div><div class="footer-bottom"><span>© <span id="year"></span> SWIM · Estúdio Criativo</span><a href="#inicio">Voltar ao início ↑</a></div></footer>
+  <dialog id="project-dialog" aria-labelledby="dialog-title"><button class="dialog-close" aria-label="Fechar projeto" type="button">×</button><img id="dialog-image" src="assets/allure.webp" alt=""><div class="dialog-caption"><h2 id="dialog-title"></h2><p id="dialog-description"></p></div></dialog>
+  <dialog id="contract-dialog" aria-labelledby="contract-title" aria-describedby="contract-intro">
+    <button class="dialog-close contract-close" aria-label="Fechar revisão do contrato" type="button">×</button>
+    <div class="contract-panel">
+      <p class="eyebrow">SWIM <span aria-hidden="true">×</span> <span data-text="client.shortName"></span></p>
+      <h2 id="contract-title">Tudo certo para<br><em>dar o próximo passo?</em></h2>
+      <p id="contract-intro">Confira a proposta antes de seguir para a leitura e assinatura do contrato.</p>
+      <ol class="contract-stages" aria-label="Etapas da contratação"><li class="current"><span>01</span> Revisar</li><li><span>02</span> Assinar no Autentique</li><li><span>03</span> Iniciar o projeto</li></ol>
+      <div class="contract-summary"><div><span class="meta-label">Cliente</span><strong data-text="client.name"></strong></div><div><span class="meta-label">Projeto</span><strong data-text="proposal.type"></strong></div><div><span class="meta-label">Forma de pagamento</span><strong id="contract-payment"></strong></div><div><span class="meta-label">Investimento nesta condição</span><strong class="contract-price" id="contract-total"></strong></div></div>
+      <p class="contract-payment-detail" id="contract-payment-detail"></p>
+      <details class="contract-scope"><summary>Conferir entregas e escopo <span aria-hidden="true">+</span></summary><ul id="contract-deliverables"></ul><p><strong>Fora do escopo:</strong> <span id="contract-exclusions"></span></p></details>
+      <div class="contract-adjustments"><span class="check" aria-hidden="true">✓</span><p data-text="contract.adjustmentPolicy"></p></div>
+      <p class="contract-start" data-text="contract.startNote"></p>
+      <label class="contract-review"><input id="contract-reviewed" type="checkbox"><span>Conferi o escopo e a condição de pagamento. Quero seguir para a leitura e assinatura do contrato.</span></label>
+      <p class="contract-status" id="contract-status" role="status"></p>
+      <div class="contract-actions"><button type="button" class="pill dark" id="contract-sign" disabled>Assinar no Autentique <span aria-hidden="true">↗</span></button><button type="button" class="contract-back">Voltar à proposta</button></div>
+      <p class="contract-footnote">A assinatura acontece no Autentique. Esta revisão não registra aceite, pagamento ou assinatura.</p>
+    </div>
+  </dialog>
+  <noscript><p class="noscript">Ative o JavaScript para visualizar os dados desta proposta.</p></noscript>
+</body>
+</html>
