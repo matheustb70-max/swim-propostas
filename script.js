@@ -3,6 +3,7 @@
   const data = window.SWIM_PROPOSAL;
   if (!data) return;
   const $ = selector => document.querySelector(selector);
+  const {icon: libraryIcon, mount: renderIcons} = window.SwimIcons;
   const money = value => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: Number.isInteger(value) ? 0 : 2, maximumFractionDigits: 2 }).format(value);
   const esc = value => String(value).replace(/[&<>"']/g, character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[character]));
   const html = (selector, content) => { $(selector).innerHTML = content; };
@@ -21,10 +22,10 @@
   html('#disciplines', data.studio.disciplines.map(text => `<span>${esc(text)}</span>`).join(''));
   html('#steps', data.process.steps.map((item, i) => `<li class="step" data-step="${i + 1}"><div class="step-header"><span class="step-num">${String(i + 1).padStart(2, '0')} /</span><span>${esc(item.period)}</span></div><h3>${esc(item.title)}</h3><p>${esc(item.text)}</p></li>`).join(''));
   $('.step-total').textContent = `/ ${String(data.process.steps.length).padStart(2, '0')}`;
-  html('#projects', data.portfolio.projects.map((item, i) => `<article class="project reveal"><button type="button" class="project-button" data-project="${i}" aria-label="Ampliar projeto ${esc(item.title)}"><div class="project-image"><img src="${esc(item.image)}" alt="${esc(item.alt)}" loading="lazy" width="800" height="500"><span class="project-arrow" aria-hidden="true">↗</span></div><div class="project-caption"><h3>${esc(item.title)}</h3><span class="project-category">${esc(item.category)}</span></div></button></article>`).join(''));
-  html('#deliverables', data.scope.deliverables.map(item => `<li><span class="check" aria-hidden="true">✓</span><div><h4>${esc(item.title)}</h4><p>${esc(item.text)}</p></div></li>`).join(''));
+  html('#projects', data.portfolio.projects.map((item, i) => `<article class="project reveal real-project"><div class="case-stage" role="group" aria-label="Prévia do projeto ${esc(item.title)}"><div class="case-copy"><span class="project-category">${esc(item.category)}</span><h3>${esc(item.title)}</h3><span class="case-rule" aria-hidden="true"><i data-lucide="minus"></i></span><p>${esc(item.description)}</p></div><div class="project-preview"><div class="preview-toolbar" aria-hidden="true"><i data-lucide="ellipsis"></i><span>${esc(item.title)} · SWIM</span><i data-lucide="monitor"></i></div><div class="preview-screen"><img class="case-visual" src="${esc(item.image)}" alt="${esc(item.alt)}" loading="lazy" decoding="async" width="1440" height="1000">${item.video ? `<video class="preview-video" data-src="${esc(item.video)}" poster="${esc(item.image)}" muted loop playsinline preload="none" tabindex="-1" disablepictureinpicture aria-hidden="true"></video>` : ''}</div>${item.video ? `<button class="preview-toggle pill dark swim-cta" type="button" aria-label="Reproduzir prévia de ${esc(item.title)}" aria-pressed="false" data-name="${esc(item.title)}"><span class="preview-toggle-icon cta-icon" aria-hidden="true"><i data-lucide="play"></i></span><span class="preview-toggle-text cta-label">Reproduzir prévia</span></button>` : ''}</div></div></article>`).join(''));
+  html('#deliverables', data.scope.deliverables.map(item => `<li><span class="check" aria-hidden="true"><i data-lucide="check"></i></span><div><h4>${esc(item.title)}</h4><p>${esc(item.text)}</p></div></li>`).join(''));
   html('#exclusions', data.scope.exclusions.map(text => `<li>${esc(text)}</li>`).join(''));
-  html('#faq-list', data.faq.items.map(item => `<details><summary>${esc(item.question)}</summary><p>${esc(item.answer)}</p></details>`).join(''));
+  html('#faq-list', data.faq.items.map(item => `<details><summary><span>${esc(item.question)}</span><i data-lucide="plus" aria-hidden="true"></i></summary><p>${esc(item.answer)}</p></details>`).join(''));
 
   const quote = data.investment;
   const totals = { split: quote.total, cash: quote.total - quote.cashDiscount, card: quote.cardTotal };
@@ -90,21 +91,8 @@
   $('.contract-close').addEventListener('click', () => contractDialog.close());
   $('.contract-back').addEventListener('click', () => contractDialog.close());
 
-  const dialog = $('#project-dialog');
-  document.querySelectorAll('[data-project]').forEach(button => button.addEventListener('click', () => {
-    const project = data.portfolio.projects[Number(button.dataset.project)];
-    $('#dialog-image').src = project.image;
-    $('#dialog-image').alt = project.alt;
-    $('#dialog-title').textContent = project.title;
-    $('#dialog-description').textContent = project.description;
-    dialog.showModal();
-  }));
-  $('#project-dialog .dialog-close').addEventListener('click', () => dialog.close());
-  dialog.addEventListener('click', event => {
-    if (event.target !== dialog) return;
-    const rect = dialog.getBoundingClientRect();
-    if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) dialog.close();
-  });
+  renderIcons();
+  document.querySelectorAll('.dash .lucide,.case-rule .lucide').forEach(icon => icon.setAttribute('preserveAspectRatio', 'none'));
 
   let previousDetails = [];
   window.addEventListener('beforeprint', () => {
@@ -141,4 +129,100 @@
   window.addEventListener('scroll', () => { if (!queued) { queued = true; requestAnimationFrame(updateScroll); } }, { passive: true });
   window.addEventListener('resize', updateScroll);
   updateScroll();
+// As prévias são iniciadas somente por clique, toque ou teclado.
+const previewCards = [...document.querySelectorAll('.real-project:has(.preview-video)')].map(card => ({
+  card,
+  frame: card.querySelector('.project-preview'),
+  video: card.querySelector('.preview-video'),
+  screen: card.querySelector('.preview-screen'),
+  button: card.querySelector('.preview-toggle'),
+  pending: false,
+  failed: false,
+  requestId: 0,
+}));
+
+function syncPreviewButton(item) {
+  const playing = !item.video.paused && !item.video.ended;
+  const loading = item.pending && !playing;
+  const text = loading ? 'Carregando prévia…' : item.failed ? 'Tentar novamente' : playing ? 'Pausar prévia' : 'Reproduzir prévia';
+  item.frame.classList.toggle('is-playing', playing);
+  item.frame.classList.toggle('is-loading', loading);
+  item.button.setAttribute('aria-pressed', String(playing));
+  item.button.setAttribute('aria-busy', String(loading));
+  item.button.setAttribute('aria-label', `${text.replace('…','')} de ${item.button.dataset.name}`);
+  item.button.querySelector('.preview-toggle-text').textContent = text;
+  const slot = item.button.querySelector('.preview-toggle-icon');
+  const icon = loading ? 'LoaderCircle' : item.failed ? 'RotateCcw' : playing ? 'Pause' : 'Play';
+  if (slot.dataset.icon !== icon) {
+    slot.replaceChildren(libraryIcon(icon));
+    slot.dataset.icon = icon;
+  }
+}
+
+function pausePreview(item) {
+  item.requestId++;
+  item.pending = false;
+  item.video.pause();
+  syncPreviewButton(item);
+}
+
+async function startPreview(item) {
+  previewCards.forEach(other => { if (other !== item) pausePreview(other); });
+  const requestId = ++item.requestId;
+  const retry = item.failed;
+  item.failed = false;
+  item.pending = true;
+  if (!item.video.getAttribute('src')) item.video.src = item.video.dataset.src;
+  if (retry) item.video.load();
+  item.video.muted = true;
+  syncPreviewButton(item);
+  try {
+    await item.video.play();
+    if (requestId !== item.requestId) return;
+    item.pending = false;
+    syncPreviewButton(item);
+  } catch (error) {
+    if (requestId !== item.requestId) return;
+    item.pending = false;
+    item.failed = error.name !== 'AbortError';
+    syncPreviewButton(item);
+  }
+}
+
+// Sair da tela ou trocar de aba apenas pausa; voltar não reinicia a prévia.
+const previewVisibility = new IntersectionObserver(entries => {
+  for (const entry of entries) {
+    if (!entry.isIntersecting) {
+      const item = previewCards.find(item => item.card === entry.target);
+      if (item) pausePreview(item);
+    }
+  }
+}, {threshold:0});
+
+for (const item of previewCards) {
+  item.video.addEventListener('playing', () => {
+    item.pending = false;
+    item.screen.classList.add('has-played');
+    syncPreviewButton(item);
+  });
+  item.video.addEventListener('pause', () => syncPreviewButton(item));
+  item.video.addEventListener('error', () => {
+    item.pending = false;
+    item.failed = true;
+    item.screen.classList.remove('has-played');
+    syncPreviewButton(item);
+  });
+  item.button.addEventListener('click', () => {
+    if (item.pending || !item.video.paused) pausePreview(item);
+    else startPreview(item);
+  });
+  syncPreviewButton(item);
+  previewVisibility.observe(item.card);
+}
+
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) previewCards.forEach(pausePreview);
+});
+window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', () => previewCards.forEach(pausePreview));
+
 })();
